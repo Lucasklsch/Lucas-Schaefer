@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Projetos pessoais</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(to bottom, #660000, #000000);
+    }
+    
+    .header {
+      background-color: #220000;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .header h1 {
+      color: #fff;
+      font-size: 24px;
+    }
+    
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .gallery-item {
+      margin: 10px;
+      cursor: pointer;
+    }
+    
+    .gallery-item img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border: 4px solid #fff;
+    }
+    
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    .overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .overlay-content {
+      background-color: #fff;
+      max-width: 90%;
+      max-height: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    }
+    
+    .overlay-content img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    
+    .overlay-content h2 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+    
+    .overlay-content p {
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Projetos pessoais</h1>
+  </div>
+
+  <div class="gallery">
+    <div class="gallery-item">
+      <img src="reverberacao.png" alt="Análise de Reverberação" onclick="openOverlay('reverberacao.png', 'Análise de Reverberação', 'Uma análise da reverberação em uma sala industrial')">
+    </div>
+    <div class="gallery-item">
+      <img src="trailer.png" alt="Reboque" onclick="openOverlay('trailer.png', 'Reboque', 'Um reboque para transporte de um veículo BAJA e de uma caixa de ferramentas')">
+    </div>
+    <div class="gallery-item">
+      <img src="estrutura.png" alt="Reforço Estrutural" onclick="openOverlay('estrutura.png', 'Reforço Estrutural', 'Reforço estrutural para um tanque de fenol')">
+    </div>
+    <div class="gallery-item">
+      <img src="excel.png" alt="Excel para o cálculo de vigas I" onclick="openOverlay('excel.png', 'Excel para o cálculo de vigas I', 'Excel criado com o intuito de realizar a verificação de perfis I em estruturas metálicas. Seguindos os cálculos descritos pela NBR 8800')">
+    </div>
+    <div class="gallery-item">
+      <img src="ugv.png" alt="Veículo terrestre não tripulado" onclick="openOverlay('ugv.png', 'Veículo terrestre não tripulado', 'Um UGV(Unmanned Ground Vehicle, ou veículo terrestre não tripulado) para a verificação de situações e terrenos perigosos')">
+    </div>
+ <div class="gallery-item">
+      <img src="baja.png" alt="Veículo BAJA" onclick="openOverlay('baja.png', 'Veículo BAJA', 'Veículo BAJA desenvolvido pela equipe IBAJAI, o qual fui membro, render de minha autoria')">
+    </div>
+    <!-- Adicione mais itens de galeria conforme necessário -->
+  </div>
+
+  <div class="overlay" onclick="closeOverlay()">
+    <div class="overlay-content">
+      <img id="overlay-image" src="" alt="">
+      <h2 id="overlay-title"></h2>
+      <p id="overlay-description"></p>
+    </div>
+  </div>
+
+  <script>
+    function openOverlay(imageSrc, title, description) {
+      var overlay = document.querySelector('.overlay');
+      var overlayImage = document.getElementById('overlay-image');
+      var overlayTitle = document.getElementById('overlay-title');
+      var overlayDescription = document.getElementById('overlay-description');
+      
+      overlayImage.src = imageSrc;
+      overlayTitle.innerText = title;
+      overlayDescription.innerText = description;
+      
+      overlay.classList.add('show');
+    }
+    
+    function closeOverlay() {
+      var overlay = document.querySelector('.overlay');
+      
+      overlay.classList.remove('show');
+    }
+  </script>
+</body>
+</html>
+
