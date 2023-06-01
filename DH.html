@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Matrizes de Posição e Rotação</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			height: 100vh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			background-image: url('robot.jpg');
+			background-size: cover;
+			background-position: center;
+			color: white;
+		}
+
+		h1 {
+			margin-top: 0;
+			font-size: 48px;
+			text-align: center;
+			text-shadow: 2px 2px #000000;
+		}
+
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			background-color: rgba(0,0,0,0.5);
+			padding: 20px;
+			border-radius: 10px;
+			box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+			margin-top: 20px;
+		}
+
+		label {
+			margin-top: 10px;
+			font-size: 24px;
+			text-align: center;
+		}
+
+		input[type="number"] {
+			width: 100px;
+			font-size: 24px;
+			padding: 10px;
+			border-radius: 5px;
+			border: none;
+			text-align: center;
+			margin-left: 10px;
+			margin-right: 10px;
+		}
+
+		button {
+			margin-top: 20px;
+			font-size: 24px;
+			padding: 10px;
+			border-radius: 5px;
+			border: none;
+			background-color: #FF69B4;
+			color: white;
+			cursor: pointer;
+			box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+		}
+	</style>
+</head>
+<body>
+	<h1>Matrizes de Posição e Rotação</h1>
+	<form>
+		<label for="a1">Comprimento do elo 1:</label>
+		<input type="number" id="a1" name="a1" min="0" step="0.1" value="1">
+		<label for="a2">Comprimento do elo 2:</label>
+		<input type="number" id="a2" name="a2" min="0" step="0.1" value="1">
+		<label for="d1">Distância entre o elo 1 e o eixo z:</label>
+		<input type="number" id="d1" name="d1" min="0" step="0.1" value="0">
+		<label for="theta1">Ângulo do elo 1 em relação ao eixo x:</label>
+		<input type="number" id="theta1" name="theta1" min="-180" max="180" step="0.1" value="0">
+		<label for="theta2">Ângulo do elo 2 em relação ao elo 1:</label>
+		<input type="number" id="theta2" name="theta2" min="-180" max="180" step="0.1" value="0">
+                <button type="button" onclick="calcular()">Calcular</button>
+</form>
+<script>
+	function calcular() {
+		const a1 = parseFloat(document.getElementById("a1").value);
+		const a2 = parseFloat(document.getElementById("a2").value);
+		const d1 = parseFloat(document.getElementById("d1").value);
+		const theta1 = parseFloat(document.getElementById("theta1").value);
+		const theta2 = parseFloat(document.getElementById("theta2").value);
+
+		const theta1Rad = theta1 * Math.PI / 180;
+		const theta2Rad = theta2 * Math.PI / 180;
+
+		const cosTheta1 = Math.cos(theta1Rad);
+		const cosTheta2 = Math.cos(theta2Rad);
+		const sinTheta1 = Math.sin(theta1Rad);
+		const sinTheta2 = Math.sin(theta2Rad);
+
+		const matrizTranslacao1 = [			[cosTheta1, -sinTheta1, 0, a1 * cosTheta1],
+			[sinTheta1, cosTheta1, 0, a1 * sinTheta1],
+			[0, 0, 1, d1],
+			[0, 0, 0, 1]
+		];
+
+		const matrizTranslacao2 = [			[cosTheta2, -sinTheta2, 0, a2 * cosTheta2],
+			[sinTheta2, cosTheta2, 0, a2 * sinTheta2],
+			[0, 0, 1, 0],
+			[0, 0, 0, 1]
+		];
+
+		const matrizPosicao = multiplicarMatrizes(matrizTranslacao1, matrizTranslacao2);
+
+		const matrizRotacao = [			[cosTheta1*cosTheta2, -sinTheta2, sinTheta1*cosTheta2, 0],
+			[cosTheta1*sinTheta2, cosTheta2, sinTheta1*sinTheta2, 0],
+			[-sinTheta1, 0, cosTheta1, 0],
+			[0, 0, 0, 1]
+		];
+
+		console.log("Matriz de Posição:");
+		console.table(matrizPosicao);
+		console.log("Matriz de Rotação:");
+		console.table(matrizRotacao);
+	}
+
+	function multiplicarMatrizes(m1, m2) {
+		let resultado = [];
+		for (let i = 0; i < m1.length; i++) {
+			resultado[i] = [];
+			for (let j = 0; j < m2[0].length; j++) {
+				let soma = 0;
+				for (let k = 0; k < m1[0].length; k++) {
+					soma += m1[i][k] * m2[k][j];
+				}
+				resultado[i][j] = soma;
+			}
+		}
+		return resultado;
+	}
+</script>
+
